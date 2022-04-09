@@ -11,7 +11,6 @@ const Home = () => (
         <div class="centralizar-cabecalho">
             <Image src={icone}/>
             <div class="titulo-cabecalho"><h2>Lista de compras da Marianna</h2></div>
-            <!--<>barra de pesquisa</>-->
         </div>    
     </header>
 );
