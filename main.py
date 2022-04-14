@@ -1,21 +1,8 @@
 from fastapi import FastAPI, status
-from pydantic import BaseModel, conint, constr
+from schemas.produto import Produto
+from bd.lista_de_compras import lista_de_compras
+
 app = FastAPI()
-
-class Produto(BaseModel):
-    link: constr(strip_whitespace=True, to_lower=True)
-    quantidade: conint(ge=0)
-
-lista_de_compras = {
-    "whey": {
-            'link': None,
-            'quantidade': 0,
-    },
-    "ovo": {
-        'link': None,
-        'quantidade': 0,
-    }
-}
 
 
 @app.get("/")
@@ -40,6 +27,4 @@ async def deleta(produto: str):
 async def altera(novos_valores: Produto, produto: str):
     # Acessa produto dentro do "banco de dados" e preenche com novos_valores
     lista_de_compras[produto] = {**novos_valores.dict()} # a var produto - não é a key e sim o value que estaa associado a key
-
     return lista_de_compras
-#rota p ver tudo(get) ok, rota pra ver(elemento) ok, rota pra deletar
