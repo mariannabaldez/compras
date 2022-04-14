@@ -1,10 +1,10 @@
 from fastapi import FastAPI, status
-from pydantic import BaseModel
+from pydantic import BaseModel, conint, constr
 app = FastAPI()
 
 class Produto(BaseModel):
-    link: str
-    quantidade: int
+    link: constr(strip_whitespace=True, to_lower=True)
+    quantidade: conint(ge=0)
 
 lista_de_compras = {
     "whey": {
