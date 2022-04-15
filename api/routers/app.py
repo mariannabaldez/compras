@@ -1,4 +1,6 @@
 from fastapi import FastAPI, status
+from models.schemas.produto import Produto
+from db.lista_de_compras import lista_de_compras
 
 app = FastAPI()
 
