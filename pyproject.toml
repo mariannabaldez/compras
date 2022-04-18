@@ -10,6 +10,8 @@ uvicorn = {extras = ["standard"], version = "^0.17.6"}
 fastapi = "^0.75.1"
 pydantic = "^1.9.0"
 SQLAlchemy = "^1.4.35"
+databases = "^0.5.5"
+aiosqlite = "^0.17.0"
 
 [tool.poetry.dev-dependencies]
 
