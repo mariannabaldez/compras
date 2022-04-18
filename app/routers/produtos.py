@@ -1,8 +1,8 @@
 from fastapi import APIRouter, status
 from app.models import Produto
-from app.database import lista_de_compras
-
-router = APIRouter()
+from app.database import tabela_produtos, database
+lista_de_compras = {}
+router = APIRouter(prefix="/produtos")
 
 @router.get("/")
 async def visualizar():
@@ -13,14 +13,16 @@ async def visualizar_elemento(item):
     return lista_de_compras[item]
 
 @router.post("/", response_model=dict, status_code=status.HTTP_201_CREATED)
-async def adiciona(produto: str, link: str):
-    lista_de_compras[produto] = dict()
-    lista_de_compras[produto]["link"] = link
-    return lista_de_compras
+async def adiciona(produto: Produto):
+    instrucao = tabela_produtos.insert().values(**produto.dict())
+    id = await database.execute(instrucao)
+    return {id: produto}
 
-@router.delete("/")
-async def deleta(produto: str):
-    return lista_de_compras.pop(produto, False)
+@router.delete("/", response_model=str, status_code=status.HTTP_200_OK)
+async def deleta(id: int):
+    instrucao = tabela_produtos.delete().where(tabela_produtos.c.id==id)
+    id = await database.execute(instrucao)
+    return f"Produto com id: {id} apagado"
 
 @router.patch("/")
 async def altera(novos_valores: Produto, produto: str):
