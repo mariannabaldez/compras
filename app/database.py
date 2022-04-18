@@ -1,13 +1,42 @@
-from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+import sqlalchemy
+import databases
 
-lista_de_compras = {}
-SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+SQLALCHEMY_DATABASE_URL = "sqlite:///./banco_dados.db"
+
+database = databases.Database(SQLALCHEMY_DATABASE_URL)
+metadata = sqlalchemy.MetaData()
+
+tabela_produtos = sqlalchemy.Table(
+    "produtos",
+    metadata,
+    sqlalchemy.Column(
+        "id",
+        sqlalchemy.Integer,
+        primary_key=True,
+        unique=True,
+        ),
+    sqlalchemy.Column(
+        "nome",
+        sqlalchemy.String,
+        nullable=False,
+    ),
+    sqlalchemy.Column(
+        "link",
+        sqlalchemy.String,
+        nullable=True
+    ),
+    sqlalchemy.Column(
+        "quantidade",
+        sqlalchemy.Integer,
+        nullable=True,
+    )
 )
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+engine = sqlalchemy.create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    connect_args={"check_same_thread": False}
+)
+
+metadata.create_all(engine)
