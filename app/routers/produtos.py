@@ -1,12 +1,24 @@
 from fastapi import APIRouter, status
 from app.models import Produto
 from app.database import tabela_produtos, database
+import sqlalchemy
+
 lista_de_compras = {}
 router = APIRouter(prefix="/produtos")
 
 @router.get("/")
 async def visualizar():
-    return lista_de_compras
+    s = sqlalchemy.select([tabela_produtos])
+    lista = []
+
+    for item in s.execute():
+        lista.append(item)
+
+    return await lista
+
+
+
+    #database. fetch_all(para retornar tudo) .fetch_one(para retornat um)
 
 
 @router.get("/{id}")
