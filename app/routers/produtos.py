@@ -9,9 +9,10 @@ async def visualizar():
     return lista_de_compras
 
 
-@router.get("/{item}")
-async def visualizar_elemento(item):
-    return lista_de_compras[item]
+@router.get("/{id}")
+async def visualizar_elemento(id):
+    instrucao = tabela_produtos.select().where(tabela_produtos.c.id==id)
+    return await database.execute(instrucao)
 
 
 @router.post("/", response_model=dict, status_code=status.HTTP_201_CREATED)
