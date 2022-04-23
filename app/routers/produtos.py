@@ -1,9 +1,9 @@
 from fastapi import APIRouter, status
-from app.models import Produto
-from app.database import tabela_produtos, database
+from models.Produtos import Produto
+from app.db.database import tabela_produtos, database
 import sqlalchemy
 
-lista_de_compras = {}
+
 router = APIRouter(prefix="/produtos")
 
 @router.get("/")
