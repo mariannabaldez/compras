@@ -17,7 +17,7 @@ tabela_login = sqlalchemy.Table(
     ),
     sqlalchemy.Column(
         "senha",
-        sqlalchemy.String,
+        sqlalchemy.Integer,
         nullable=False,
     ),
 )
