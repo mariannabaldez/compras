@@ -1,12 +1,5 @@
-from sqlalchemy.ext.declarative import declarative_base
-import sqlalchemy
-import databases
+from app.db.database import *
 
-
-SQLALCHEMY_DATABASE_URL = "sqlite:///./banco_dados.db"
-
-database = databases.Database(SQLALCHEMY_DATABASE_URL)
-metadata = sqlalchemy.MetaData()
 
 tabela_produtos = sqlalchemy.Table(
     "produtos",
@@ -33,10 +26,3 @@ tabela_produtos = sqlalchemy.Table(
         nullable=True,
     )
 )
-
-engine = sqlalchemy.create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False}
-)
-
-metadata.create_all(engine)
