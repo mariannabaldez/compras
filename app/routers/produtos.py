@@ -8,7 +8,8 @@ router = APIRouter(prefix="/produtos")
 
 @router.get("/")
 async def visualizar():
-    pass
+    instrucao = tabela_produtos.select()
+    return await database.fetch_all(instrucao)
     #database. fetch_all(para retornar tudo) .fetch_one(para retornat um)
 
 
