@@ -7,13 +7,13 @@ router = APIRouter(prefix="/login")
 
 @router.get("/")
 async def visualizar():
-    k = tabela_login.select()
-    return await database.fetch_all(k)
+    instrucao = tabela_login.select()
+    return await database.fetch_all(instrucao)
 
 @router.get("/{id}")
 async def visualizar_um(id):
-    k = tabela_login.select().where(tabela_login.c.id==id)
-    return await database.fetch_one(k)
+    instrucao = tabela_login.select().where(tabela_login.c.id==id)
+    return await database.fetch_one(instrucao)
 
 
 @router.post("/", response_model=dict,)
