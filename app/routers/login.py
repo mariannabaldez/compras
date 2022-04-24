@@ -1,13 +1,20 @@
 from fastapi import APIRouter, status
 from app.models.Login import Login
-from app.db.tabela_login import tabela_login, database
+from app.db.database import database, tabela_login
 import sqlalchemy
 
 router = APIRouter(prefix="/login")
 
 @router.get("/")
 async def visualizar():
-    pass
+    k = tabela_login.select()
+    return await database.fetch_all(k)
+
+@router.get("/{id}")
+async def visualizar_um(id):
+    k = tabela_login.select().where(tabela_login.c.id==id)
+    return await database.fetch_one(k)
+
 
 @router.post("/", response_model=dict,)
 async def adiciona(login: Login):

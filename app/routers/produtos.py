@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status
-from models.Produtos import Produto
-from app.db.database import tabela_produtos, database
+from app.models.Produtos import Produto
+from app.db.database import database,tabela_produtos
 import sqlalchemy
 
 
