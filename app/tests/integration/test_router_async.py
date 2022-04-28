@@ -20,7 +20,6 @@ def test_criar_novo_produto_sucesso():
     assert response.status_code == 201
     assert response.json() == {'produto cadastrado': item}
 
-
 def test_criar_novo_produto_falho():
     item = {
             "nome": "whey",
@@ -40,5 +39,15 @@ def test_deletar_novo_produto_sucesso():
     with TestClient(app=app) as client:
         response = client.delete('/produtos/', json=item)
     assert response.status_code == 200
+
+def test_deletar_novo_produto_falho():
+    item = {
+            "nome": "whey",
+            "link": "www.google.com.br",
+            "quantidade": 3
+    }
+    with TestClient(app=app) as client:
+        response = client.delete('/produtos/', json=item)
+    assert response.status_code == 404
 
 # teste para confirmar que não da para colocar quantidade de produtos negatva
