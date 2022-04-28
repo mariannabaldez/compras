@@ -3,7 +3,7 @@ from app.models.Login import Login
 from app.db.database import database, tabela_login
 import sqlalchemy
 
-router = APIRouter(prefix="/login")
+router = APIRouter()
 
 @router.get("/")
 async def visualizar():
@@ -13,6 +13,7 @@ async def visualizar():
 @router.get("/{id}")
 async def visualizar_um(id):
     instrucao = tabela_login.select().where(tabela_login.c.id==id)
+
     return await database.fetch_one(instrucao)
 
 
