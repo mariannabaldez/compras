@@ -37,17 +37,19 @@ def test_deletar_novo_produto_sucesso():
             "quantidade": 3
     }
     with TestClient(app=app) as client:
+        old_response = client.post('/produtos/', json=item)
         response = client.delete('/produtos/', json=item)
+    assert old_response.status_code == 201
     assert response.status_code == 200
 
 def test_deletar_novo_produto_falho():
-    item = {
-            "nome": "whey",
+    item_falho = {
+            "nome": "produto_inexistente",
             "link": "www.google.com.br",
             "quantidade": 3
     }
     with TestClient(app=app) as client:
-        response = client.delete('/produtos/', json=item)
+        response = client.delete('/produtos/', json=item_falho)
     assert response.status_code == 404
 
 # teste para confirmar que não da para colocar quantidade de produtos negatva
