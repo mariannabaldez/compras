@@ -1,19 +1,44 @@
-from urllib import response
 import pytest
-from httpx import AsyncClient
-from app.db.database import database,tabela_produtos
+from starlette.testclient import TestClient
 
 from app import main
 app = main.app
 
-item = {1}
 
-@pytest.mark.anyio
-async def test_visualizar_produto_passando_id_valido():
-    async with AsyncClient(app=app, base_url="//127.0.0.1:8000/produtos/produtos/item") as ac:
-        response = await ac.get("/produtos")
+def test_criar_novo_produto_sucesso():
+    item = {
+            "nome": "whey",
+            "link": "https://www.google.com.br",
+            "quantidade": 3
+    }
+    with TestClient(app=app) as client:
+        response = client.post(
+            '/produtos/',
+            json= item
+        )
+
+    assert response.status_code == 201
+    assert response.json() == {'produto cadastrado': item}
+
+
+def test_criar_novo_produto_falho():
+    item = {
+            "nome": "whey",
+            "link": "www.google.com.br",
+            "quantidade": 3
+    }
+    with TestClient(app=app) as client:
+        response = client.post('/produtos/', json=item)
+    assert response.status_code == 422
+
+def test_deletar_novo_produto_sucesso():
+    item = {
+            "nome": "whey",
+            "link": "www.google.com.br",
+            "quantidade": 3
+    }
+    with TestClient(app=app) as client:
+        response = client.delete('/produtos/', json=item)
     assert response.status_code == 200
-    assert database.execute(tabela_produtos.select().where(tabela_produtos.c.id==id))
-
 
 # teste para confirmar que não da para colocar quantidade de produtos negatva
