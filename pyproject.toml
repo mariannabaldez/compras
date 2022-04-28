@@ -12,6 +12,7 @@ pydantic = "^1.9.0"
 SQLAlchemy = "^1.4.35"
 databases = "^0.5.5"
 aiosqlite = "^0.17.0"
+pytest = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 
