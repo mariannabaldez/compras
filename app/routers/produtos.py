@@ -22,15 +22,15 @@ async def visualizar_elemento(id):
 @router.post("/", response_model=dict, status_code=status.HTTP_201_CREATED)
 async def adiciona(produto: Produto):
     instrucao = tabela_produtos.insert().values(**produto.dict())
-    await database.execute(instrucao)
-    return {'produto cadastrado': produto}
+    id = await database.execute(instrucao)
+    return {'id': id, 'produto': produto}
 
 
-@router.delete("/", response_model=str, status_code=status.HTTP_200_OK)
+@router.delete("/{id}", response_model=str, status_code=status.HTTP_202_ACCEPTED)
 async def deleta(id: int):
     instrucao = tabela_produtos.delete().where(tabela_produtos.c.id==id)
-    id = await database.execute(instrucao)
-    if not id:
+    id_db = await database.execute(instrucao)
+    if not id_db:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f'produto com id: {id} não existe'
