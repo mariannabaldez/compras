@@ -22,7 +22,17 @@ async def visualizar_elemento(id):
 @router.post("/", response_model=dict, status_code=status.HTTP_201_CREATED)
 async def adiciona(produto: Produto):
     instrucao = tabela_produtos.insert().values(**produto.dict())
-    id = await database.execute(instrucao)
+    id_db = await database.execute(instrucao)
+    if not id_db:
+        raise HTTPException(
+            status_code = status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail = f'produto com id: {id} não pode ser cadastrado. Espera-se que quantidade seja um numeral inteiro.'
+        )
+    elif not id_db:
+        raise HTTPException(
+            status_code = status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail = f'produto com id: {id} não pode ser cadastrado. Espera-se que quantidade seja um numeral acima de zero'
+        )
     return {'id': id, 'produto': produto}
 
 

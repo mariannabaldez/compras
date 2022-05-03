@@ -12,26 +12,34 @@ def test_criar_novo_produto_sucesso():
             "quantidade": 3
     }
     with TestClient(app=app) as client:
-        response = client.post(
-            '/produtos/',
-            json= item
+        response = client.post('/produtos/', json=item
         )
     assert response.status_code == 201
     assert response.json()['produto'] == item
 
-# def test_criar_novo_produto_falho():
-#     item = {
-#             "nome": "whey",
-#             "link": "www.google.com.br",
-#             "quantidade": 3
-#     }
-#     with TestClient(app=app) as client:
-#         response = client.post('/produtos/', json=item)
-#     assert response.status_code == 422
+def test_criar_novo_produto_str_como_quant_falho():
+    item = {
+            "nome": "whey",
+            "link": "www.google.com.br",
+            "quantidade": "string"
+    }
+    with TestClient(app=app) as client:
+        response = client.post('/produtos/', json=item)
+    assert response.status_code == 422
+
+def test_criar_novo_produto_quant_negativa_falho():
+    item = {
+            "nome": "whey",
+            "link": "www.google.com.br",
+            "quantidade": -2
+    }
+    with TestClient(app=app) as client:
+        response = client.post('/produtos/', json=item)
+    assert response.status_code == 422
 
 def test_deletar_novo_produto_sucesso():
     entrada = {
-            "nome": "CAFé",
+            "nome": "café",
             "link": "https://www.amazon.com.br",
             "quantidade": 1
     }
@@ -56,6 +64,7 @@ def test_deletar_id_nao_encontrado():
 
     assert response.status_code == 404
     assert response.json()['detail'] == f'produto com id: {id} não existe'
+
 # def test_deletar_novo_produto_falho():
 #     with TestClient(app=app) as client:
 #         response = client.delete('/produtos/')
